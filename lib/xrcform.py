@@ -70,20 +70,19 @@ def AutoBindEvent(win, prefix='on', excludes=[]):
     @param prefix: The prefix of method name of event handler to be bound.
     @param excludes: All method names listed in the list will not be bound.
     """
-    wxEvtPrefix = 'EVT_'
-    
     for attr in dir(win):
-        value = getattr(win, attr)
-        if attr not in excludes and attr.startswith(prefix) and callable(value):
-            event, src, id1, id2 = MethodNameToEvent(attr, prefix)
-            if src:
-                src_object = getattr(win, src)
-                if (src_object is None):
-                    raise Exception('Cannot find widget "' + src + '" in ' + win.__class__.__name__)
-                else:
-                    src = src_object
-            if src is not None or id1 >= 0 or id2 >= 0:
-                win.Bind(event, value, src, id1, id2)
+        if ((attr not in excludes) and (attr.startswith(prefix))):
+            value = getattr(win, attr)
+            if (callable(value)):
+                event, src, id1, id2 = MethodNameToEvent(attr, prefix)
+                if (src):
+                    src_object = getattr(win, src)
+                    if (src_object is None):
+                        raise Exception('Cannot find widget "' + src + '" in ' + win.__class__.__name__)
+                    else:
+                        src = src_object
+                if ((src is not None) or (id1 >= 0) or (id2 >= 0)):
+                    win.Bind(event, value, src, id1, id2)
 
 class XrcFrame(wx.Frame):
     """XrcFrame is a helper class derived from wx.Frame. It can help to load 
