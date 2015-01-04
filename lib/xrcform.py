@@ -193,8 +193,12 @@ class XrcDialog(wx.Dialog):
             AutoBindEvent(self)
             
     def __getattr__(self, name):
-        self.__dict__[name] = xrc.XRCCTRL(self, name)
-        return self.__dict__[name]
+        ctrl = xrc.XRCCTRL(self, name)
+        if (ctrl is None):
+            raise AttributeError(self.__class__.__name__ + " instance has no attribute '" + name + "'")
+        else:
+            self.__dict__[name] = xrc.XRCCTRL(self, name)
+            return self.__dict__[name]
 
 class XrcPanel(wx.Panel):
     """XrcPanel will load panel from XRC resource automatically."""
@@ -242,8 +246,12 @@ class XrcPanel(wx.Panel):
             AutoBindEvent(self)
             
     def __getattr__(self, name):
-        self.__dict__[name] = xrc.XRCCTRL(self, name)
-        return self.__dict__[name]
+        ctrl = xrc.XRCCTRL(self, name)
+        if (ctrl is None):
+            raise AttributeError(self.__class__.__name__ + " instance has no attribute '" + name + "'")
+        else:
+            self.__dict__[name] = xrc.XRCCTRL(self, name)
+            return self.__dict__[name]
         
 
 # EOF.
